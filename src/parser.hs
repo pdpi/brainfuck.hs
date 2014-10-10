@@ -1,6 +1,6 @@
 module Parser where
 
-import Brainfuck
+import Interpreter
 import Data.List
 
 type Parser = [Program]
@@ -11,6 +11,7 @@ push p = []:p
 pop :: Parser -> Parser
 pop (p:p':ps) = ((Loop $ reverse p):p'):ps
 
+-- Add an instruction to the top of 
 add :: Instruction -> Parser -> Parser
 add i (p:ps) = (i:p):ps
 

@@ -1,13 +1,14 @@
 module Main (main) where
 
 import System.Environment(getArgs)
-import Brainfuck
+import Interpreter
 import Parser
+import Memory
 
 memory = Memory [] 0 []
 
 main = do
   args <- getArgs
   src <- readFile $ head args 
-  bf (parse src) memory
+  interpreter (parse src) memory
   return ()
