@@ -10,20 +10,19 @@ push p = []:p
 pop :: Parser -> Parser
 pop (p:p':ps) = ((Loop $ reverse p):p'):ps
 
-put :: Instruction -> Parser -> Parser
-put i (p:ps) = (i:p):ps
+add :: Parser -> Instruction -> Parser
+add (p:ps) i = (i:p):ps
 
 parse :: String -> Program
-parse src = reverse . head . fst $ parsePartial ([[]], src)
+parse src = reverse . head $ foldl parseChar [[]] src
 
-parsePartial :: (Parser, String) -> (Parser, String)
-parsePartial (p, ('.':cs)) = parsePartial (put Put  p, cs)
-parsePartial (p, (',':cs)) = parsePartial (put Get  p, cs)
-parsePartial (p, ('>':cs)) = parsePartial (put Next p, cs)
-parsePartial (p, ('<':cs)) = parsePartial (put Prev p, cs)
-parsePartial (p, ('+':cs)) = parsePartial (put Inc  p, cs)
-parsePartial (p, ('-':cs)) = parsePartial (put Dec  p, cs)
-parsePartial (p, ('[':cs)) = parsePartial (push p,     cs)
-parsePartial (p, (']':cs)) = parsePartial (pop p,      cs)
-parsePartial (p, (_  :cs)) = parsePartial (p,          cs)
-parsePartial (p, [])       = (p, [])
+parseChar :: Parser -> Char -> Parser
+parseChar p '.' = add p Put
+parseChar p ',' = add p Get
+parseChar p '>' = add p Next
+parseChar p '<' = add p Prev
+parseChar p '+' = add p Inc
+parseChar p '-' = add p Dec
+parseChar p '[' = push p
+parseChar p ']' = pop p
+parseChar p _ = p
