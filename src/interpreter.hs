@@ -9,7 +9,9 @@ data Instruction = Get
                  | Next
                  | Prev
                  | Inc
+                 | Add Int
                  | Dec
+                 | Sub Int
                  | Loop [Instruction] deriving (Show, Eq)
 
 type Program = [Instruction]
@@ -27,7 +29,9 @@ process Get = \memory -> do
 process Next     = return . next
 process Prev     = return . prev
 process Inc      = return . inc
+process (Add n)  = return . (add n)
 process Dec      = return . dec
+process (Sub n)  = return . (sub n)
 process (Loop p) = \memory -> if (peek memory) /= 0
   then do
     mem <- interpreter p memory
