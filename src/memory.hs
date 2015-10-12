@@ -17,7 +17,14 @@ prev (Memory []     c f) = Memory [] 0 (c:f)
 prev (Memory (b:bs) c f) = Memory bs b (c:f)
 
 inc :: Memory -> Memory
-inc (Memory b c f) = Memory b (c + 1) f
+inc = add 1
+
+add :: Int -> Memory -> Memory
+add n (Memory b c f) = Memory b ((c + n) `mod` 255) f
 
 dec :: Memory -> Memory
-dec (Memory b c f) = Memory b (c - 1) f
+dec = sub 1
+
+sub :: Int -> Memory -> Memory
+sub n (Memory b c f) = Memory b ((c - n) `mod` 255) f
+
