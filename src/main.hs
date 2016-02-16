@@ -6,8 +6,10 @@ import Parser
 import Optimiser
 import Memory
 
+memory :: Memory.Memory 
 memory = Memory [] 0 []
 
+main :: IO ()
 main = do
   args <- getArgs
   src <- readFile $ head args 
