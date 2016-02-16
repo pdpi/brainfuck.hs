@@ -27,4 +27,3 @@ dec = sub 1
 
 sub :: Int -> Memory -> Memory
 sub n (Memory b c f) = Memory b ((c - n) `mod` 255) f
-

@@ -8,10 +8,7 @@ data Instruction = Get
                  | Put
                  | Next
                  | Prev
-                 | Inc
                  | Add Int
-                 | Dec
-                 | Sub Int
                  | Loop [Instruction] deriving (Show, Eq)
 
 type Program = [Instruction]
@@ -24,14 +21,11 @@ process Put = \memory -> do
   putStr [chr . peek $ memory]
   return memory
 process Get = \memory -> do
-  char:chars <- getLine
+  char:_ <- getLine
   return (write memory $ ord char)
 process Next     = return . next
 process Prev     = return . prev
-process Inc      = return . inc
 process (Add n)  = return . (add n)
-process Dec      = return . dec
-process (Sub n)  = return . (sub n)
 process (Loop p) = \memory -> if (peek memory) /= 0
   then do
     mem <- interpreter p memory
